@@ -10,22 +10,36 @@ jobject PlatformUtils::nativeWindow = nullptr;
 #if defined(Q_OS_ANDROID)
 GooglePlayServices::Availability GooglePlayServices::getAvailability()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QAndroidJniEnvironment env;
     QAndroidJniObject activity = QtAndroid::androidActivity();
 
     auto availablity = ::google_play_services::CheckAvailability(env, activity.object());
-    qDebug() << "GooglePlayServices::getAvailability result :" << availablity << " (0 is kAvailabilityAvailable)";
-    return Availability(availablity);
+#else
+    QJniEnvironment env;
+    auto activity = QJniObject(QNativeInterface::QAndroidApplication::context());
+
+    auto availability = ::google_play_services::CheckAvailability(env.jniEnv(), activity.object());
+#endif
+    qDebug() << "GooglePlayServices::getAvailability result :" << availability << " (0 is kAvailabilityAvailable)";
+    return Availability(availability);
 }
 
 bool GooglePlayServices::available()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QAndroidJniEnvironment env;
     QAndroidJniObject activity = QtAndroid::androidActivity();
 
     auto availablity = ::google_play_services::CheckAvailability(env, activity.object());
-    qDebug() << "GooglePlayServices::available() result :" << availablity << " (0 is kAvailabilityAvailable)";
-    return ::google_play_services::kAvailabilityAvailable == availablity;
+#else
+    QJniEnvironment env;
+    auto activity = QJniObject(QNativeInterface::QAndroidApplication::context());
+
+    auto availability = ::google_play_services::CheckAvailability(env.jniEnv(), activity.object());
+#endif
+    qDebug() << "GooglePlayServices::available() result :" << availability << " (0 is kAvailabilityAvailable)";
+    return ::google_play_services::kAvailabilityAvailable == availability;
 }
 #endif
 
@@ -35,9 +49,14 @@ bool GooglePlayServices::available()
 #if defined(Q_OS_ANDROID)
 jobject PlatformUtils::getNativeWindow()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QAndroidJniEnvironment env;
 
     QAndroidJniObject activity = QtAndroid::androidActivity();
+#else
+    QJniEnvironment env;
+    auto activity = QJniObject(QNativeInterface::QAndroidApplication::context());
+#endif
 
     if (!nativeWindow) {
         nativeWindow = env->NewGlobalRef(activity.object());

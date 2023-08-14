@@ -6,9 +6,14 @@
 #include <QGuiApplication>
 
 #if defined(Q_OS_ANDROID)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QAndroidJniObject>
 #include <QAndroidJniEnvironment>
 #include <QtAndroid>
+#else
+#include <QJniObject>
+#include <QJniEnvironment>
+#endif
 #include "google_play_services/availability.h"
 #endif
 

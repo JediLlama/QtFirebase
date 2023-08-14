@@ -44,9 +44,14 @@ void QtFirebase::requestInitInternal(bool repeat)
     }
 
 #ifdef Q_OS_ANDROID
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QAndroidJniEnvironment env;
-
     _firebaseApp = firebase::App::Create(firebase::AppOptions(), env, p);
+#else
+    QJniEnvironment env;
+    _firebaseApp = firebase::App::Create(firebase::AppOptions(), env.jniEnv(), p);
+#endif
+
 #else
     _firebaseApp = firebase::App::Create();
 #endif
