@@ -247,6 +247,7 @@ contains(DEFINES,QTFIREBASE_BUILD_MESSAGING) {
         includeFirebaseFramework(FirebaseMessaging, FirebaseInstanceID)
         includeFirebaseFramework(FirebasePerformance, Protobuf)
         includeFirebaseFramework(FirebaseMessaging, FirebaseMessaging)
+        includeFirebaseFramework(FirebaseMessaging, GoogleDataTransport)
 
         LIBS += \
             -framework UserNotifications \
@@ -273,6 +274,7 @@ contains(DEFINES,QTFIREBASE_BUILD_ANALYTICS) {
         includeFirebaseFramework(FirebaseAnalytics, GoogleUtilities)
         includeFirebaseFramework(FirebaseAnalytics, nanopb)
         includeFirebaseFramework(FirebaseAnalytics, PromisesObjC)
+        includeFirebaseFramework(FirebaseAnalytics, FBLPromises)
         includeFirebaseFramework(FirebaseAnalytics, FirebaseInstallations)
         includeFirebaseFramework(FirebaseAnalytics, GoogleDataTransport)
         includeFirebaseFramework(FirebaseAnalytics, GoogleAppMeasurement)
